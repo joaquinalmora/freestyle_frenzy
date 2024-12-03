@@ -128,6 +128,23 @@ CREATE TABLE productinventory (
         ON UPDATE CASCADE ON DELETE NO ACTION
 );
 
+CREATE TABLE admin (
+    adminId INT IDENTITY PRIMARY KEY,
+    firstName VARCHAR(40) NOT NULL,
+    lastName VARCHAR(40) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    phoneNumber VARCHAR(20),
+    address VARCHAR(50),
+    city VARCHAR(40),
+    state VARCHAR(20),
+    postalCode VARCHAR(20),
+    country VARCHAR(40),
+    username VARCHAR(20) NOT NULL UNIQUE,
+    password VARCHAR(30) NOT NULL,
+    createdAt DATETIME DEFAULT GETDATE() -- Tracks when the admin was added
+);
+
+
 CREATE TABLE review (
     reviewId            INT IDENTITY,
     reviewRating        INT,
@@ -141,6 +158,12 @@ CREATE TABLE review (
     FOREIGN KEY (productId) REFERENCES product(productId)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+INSERT INTO admin (firstName, lastName, email, phoneNumber, address, city, state, postalCode, country, username, password)
+VALUES 
+('Jacob', 'Damery', 'jacob.damery@gmail.com', '111-222-3333', '123 Admin Lane', 'New York', 'NY', '10001', 'United States', 'jacob', 'Admin123!'),
+('Joaquin', 'Almora', 'joaquin.Almora@gmail.com', '444-555-6666', '456 Admin Blvd', 'Los Angeles', 'CA', '90001', 'United States', 'joaquin', 'Admin123!');
+
 
 INSERT INTO category(categoryName) VALUES ('Beverages');
 INSERT INTO category(categoryName) VALUES ('Condiments');

@@ -13,21 +13,31 @@
             height: 100vh;
         }
         .header {
-            background: linear-gradient(135deg, #FF7E00, #FF4500, #FFD700);
+            background: white;
             padding: 20px;
-            color: white;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .header h1 {
             margin: 0;
             font-family: 'Arial Black', sans-serif;
             letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: black;
+        }
+        .header img {
+            height: 50px;
+            width: auto;
         }
         .content-container {
             background-color: white;
@@ -37,9 +47,11 @@
             text-align: center;
             width: 100%;
             max-width: 400px;
+            margin-top: 100px; /* Ensure it sits below the header */
         }
-        .content-container h3 {
+        h3 {
             color: #333;
+            font-family: 'Arial Black', sans-serif;
             margin-bottom: 20px;
         }
         .error-message {
@@ -66,33 +78,66 @@
             box-sizing: border-box;
         }
         .submit {
-            background: linear-gradient(135deg, #FF7E00, #FF4500);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            --color: #000;
+            font-family: inherit;
+            display: inline-block;
             width: 100%;
-            margin-top: 10px;
-            font-size: 16px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 2.6em;
+            line-height: 2.5em;
+            text-align: center;
+            cursor: pointer;
+            margin: 10px 0;
+            font-size: 17px;
+            z-index: 1;
+            color: white;
+            background: var(--color);
+            border: 2px solid var(--color);
+            border-radius: 6px;
+            position: relative;
+            transition: all 0.3s ease;
         }
         .submit:hover {
-            background: #FF4500;
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: black;
+            background: white;
+            border: 2px solid black;
+        }
+        .secondary-button {
+            --color: #333;
+            font-family: inherit;
+            display: inline-block;
+            width: 100%;
+            height: 2.6em;
+            line-height: 2.5em;
+            text-align: center;
+            cursor: pointer;
+            margin: 10px 0;
+            font-size: 17px;
+            z-index: 1;
+            color: white;
+            background: var(--color);
+            border: 2px solid var(--color);
+            border-radius: 6px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .secondary-button:hover {
+            color: black;
+            background: white;
+            border: 2px solid black;
         }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>Login to System</h1>
+    <div class="header-left">
+        <h1>Freestyle Frenzy</h1>
+        <img src="img/Freestyle.png" alt="Freestyle Logo">
+    </div>
 </div>
 
 <div class="content-container">
-    <h3>Please Login to System</h3>
+    <h3>Login to Your Account</h3>
 
     <% 
         // Print prior error login message if present
@@ -115,8 +160,11 @@
                 <td><input type="password" name="password" maxlength="10"></td>
             </tr>
         </table>
-        <input class="submit" type="submit" name="Submit2" value="Log In">
+        <button class="submit" type="submit" name="Submit2">Log In</button>
     </form>
+
+    <!-- Create New Account Button -->
+    <button class="secondary-button" onclick="location.href='register.jsp'">Create New Account</button>
 </div>
 
 </body>

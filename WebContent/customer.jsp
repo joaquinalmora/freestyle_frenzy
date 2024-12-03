@@ -4,11 +4,61 @@
 <title>Customer Page</title>
 <style>
     body {
-        font-family: Arial, sans-serif;
         margin: 0;
-        padding: 0;
-        background: linear-gradient(135deg, #FF7E00, #FF4500, #FFD700);
+        font-family: Arial, sans-serif;
+        background-color: #fff8e1; /* Subtle warm background */
         color: #333;
+    }
+    .header {
+        background: white;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .header h1 {
+        margin: 0;
+        font-family: 'Arial Black', sans-serif;
+        letter-spacing: 2px;
+        color: black;
+    }
+    .header img {
+        height: 50px;
+        width: auto;
+    }
+    .buttons-container {
+        display: flex;
+        gap: 10px;
+    }
+    button {
+        --color: #000;
+        font-family: inherit;
+        display: inline-block;
+        width: 6em;
+        height: 2.6em;
+        line-height: 2.5em;
+        overflow: hidden;
+        cursor: pointer;
+        margin: 0;
+        font-size: 17px;
+        z-index: 1;
+        color: white;
+        background: var(--color);
+        border: 2px solid var(--color);
+        border-radius: 6px;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    button:hover {
+        color: black;
+        background: white;
+        border: 2px solid black;
     }
     .container {
         max-width: 800px;
@@ -17,10 +67,10 @@
         padding: 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         border-radius: 10px;
-        text-align: center;
     }
     h3 {
-        color: #FF4500;
+        font-family: 'Arial Black', sans-serif;
+        color: black;
     }
     .message {
         font-size: 1.2em;
@@ -30,42 +80,44 @@
     .error {
         color: red;
     }
-    .back-button {
-        font-size: 1em;
-        padding: 10px 20px;
-        background-color: #FF7E00;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        margin: 20px auto;
+    .back-button, .change-password-button {
+        --color: #000;
         display: inline-block;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        width: 12em;
+        height: 2.6em;
+        line-height: 2.5em;
+        text-align: center;
+        text-decoration: none;
+        font-size: 17px;
+        color: white;
+        background: var(--color);
+        border: 2px solid var(--color);
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        margin: 10px;
     }
-    .back-button:hover {
-        background-color: #FF4500;
-        transform: scale(1.05);
-    }
-    .customer-info {
-        margin-top: 20px;
-        font-size: 1.2em;
+    .back-button:hover, .change-password-button:hover {
+        color: black;
+        background: white;
+        border: 2px solid black;
     }
     table {
         margin: 20px auto;
         border-collapse: collapse;
-        width: 80%;
+        width: 100%;
         text-align: left;
-    }
-    table, th, td {
-        border: 1px solid #ddd;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
     th, td {
         padding: 10px;
+        border: 1px solid #ddd;
     }
     th {
-        background-color: #FFF7E5;
+        background-color: #fff;
+        font-weight: bold;
     }
     td {
-        background-color: #FFF7E5;
+        background-color: #fff;
     }
 </style>
 </head>
@@ -136,6 +188,9 @@
                 </tr>
             </table>
             <a href="index.jsp" class="back-button">Back to Products</a>
+            <a href="EditAccount.jsp" class="change-password-button">Change Information</a>
+            <a href="listorder.jsp" class="change-password-button">Order History</a>
+        
         </div>
     <%
             } else {
