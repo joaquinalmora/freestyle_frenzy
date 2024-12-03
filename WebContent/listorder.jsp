@@ -6,14 +6,109 @@
 <head>
     <title>Your Shop Grocery Order List</title>
     <style>
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; }
-        th { background-color: #f2f2f2; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff8e1; /* Light background to complement the gradient header */
+        }
+        .header {
+    background: linear-gradient(135deg, #FF7E00, #FF4500, #FFD700);
+    padding: 15px;
+    color: white;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+.header-content h1 {
+    margin: 0;
+    font-family: 'Arial Black', sans-serif;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    flex: 1; /* Ensures the title stays centered */
+    text-align: center; /* Centers the title */
+}
+        .header h1 {
+            text-align: center;
+            margin: 0;
+            font-family: 'Arial Black', sans-serif;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        h2 {
+            color: #FF4500; /* Vibrant orange to align with the theme */
+        }
+        p {
+            font-size: 16px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: #fff;
+        }
+        th {
+            background: linear-gradient(135deg, #FF7E00, #FF4500);
+            color: white;
+            font-weight: bold;
+            text-align: left;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        tr:nth-child(even) {
+            background-color: #fff8e1; /* Subtle alternation for better readability */
+        }
+        tr:hover {
+            background-color: #ffebcc; /* Highlight row on hover */
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .back-button {
+    position: absolute;
+    left: 15px; /* Aligns the button to the left */
+    background: linear-gradient(135deg, #FF7E00, #FF4500);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-button:hover {
+    background: #FF4500;
+    transform: scale(1.05);
+}
+
+.header-content {
+    display: flex;
+    justify-content: center; /* Center the content in the header */
+    align-items: center;    /* Vertically align items */
+    position: relative;     /* Allows absolute positioning of the button */
+}
     </style>
 </head>
 <body>
-
-<h1>Order List</h1>
+    <div class="header">
+        <div class="header-content">
+            <a href="listprod.jsp" class="back-button">Back</a>
+            <h1>Your Shops Order List</h1>
+        </div>
+    </div>
+    
+    
 
 <%
     // Database connection variables (use the Docker container alias and credentials from docker-compose.yml)
@@ -93,7 +188,9 @@
             }
         }
     } catch (Exception e) {
-        out.println("Error: " + e.getMessage());
+%>
+    <div class="error">Error: <%= e.getMessage() %></div>
+<%
     }
 %>
 

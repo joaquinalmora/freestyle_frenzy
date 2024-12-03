@@ -1,47 +1,113 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.text.NumberFormat" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.List" %>
 <%@ page import="java.net.URLEncoder" %>
-<%@ include file="header.jsp" %>
 <style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #fff8e1; /* Light background to match the index page */
+    }
     .cart-container {
         max-width: 90%;
-        margin: 0 auto;
+        margin: 20px auto;
         padding: 20px;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
     }
     .cart-table {
         width: 100%;
         border-collapse: collapse;
         margin: 20px 0;
-        background-color: white;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    .cart-table th, .cart-table td {
-        padding: 15px 25px;
+    .cart-table th {
+        background: white;
+        color: black;
+        font-weight: bold;
+        text-align: left;
+        padding: 15px;
+        border-bottom: 2px solid black;
+    }
+    .cart-table td {
+        padding: 15px;
         text-align: left;
         border-bottom: 1px solid #ddd;
     }
-    .cart-table th {
-        background-color: #f5f5f5;
-        font-size: 1.1em;
-    }
-    .cart-table tr:hover {
+    .cart-table tr:nth-child(even) {
         background-color: #f9f9f9;
     }
+    .cart-table tr:hover {
+        background-color: #f0f0f0;
+    }
     .add-to-cart {
-        background-color: #4CAF50;
-        color: white;
-        padding: 8px 15px;
-        border: none;
-        border-radius: 4px;
-        text-decoration: none;
+        --color: #000;
+        font-family: inherit;
         display: inline-block;
+        width: 6em;
+        height: 2.6em;
+        line-height: 2.5em;
+        overflow: hidden;
+        cursor: pointer;
+        font-size: 16px;
+        z-index: 1;
+        color: white;
+        background: var(--color);
+        border: 2px solid var(--color);
+        border-radius: 6px;
+        position: relative;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+    }
+    .add-to-cart:hover {
+        color: black;
+        background: white;
+        border: 2px solid black;
     }
     .search-container {
         margin: 20px auto;
         text-align: center;
+        padding: 10px;
     }
+    .search-container input[type="text"],
+    .search-container select {
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid black;
+        border-radius: 4px;
+        margin-right: 10px;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+    .search-container input[type="text"]:focus,
+    .search-container select:focus {
+        border-color: #FF4500;
+    }
+    .search-container input[type="submit"] {
+        --color: #000;
+        font-family: inherit;
+        display: inline-block;
+        width: 8em;
+        height: 2.6em;
+        line-height: 2.5em;
+        overflow: hidden;
+        cursor: pointer;
+        font-size: 16px;
+        z-index: 1;
+        color: white;
+        background: var(--color);
+        border: 2px solid var(--color);
+        border-radius: 6px;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    .search-container input[type="submit"]:hover {
+        color: black;
+        background: white;
+        border: 2px solid black;
+    }
+</style>
+
 </style>
 
 <div class="cart-container">
@@ -51,7 +117,6 @@
             <select name="category">
                 <option value="">All Categories</option>
                 <% 
-                // Database connection details
                 String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True";
                 String uid = "sa";
                 String pw = "304#sa#pw";
@@ -79,10 +144,8 @@
     </div>
 
     <%
-    // Get the search parameter
     String name = request.getParameter("productName");
     String categoryId = request.getParameter("category");
-
     if (name == null) name = "";
 
     try {
@@ -92,7 +155,6 @@
     }
 
     try (Connection con = DriverManager.getConnection(url, uid, pw)) {
-        // Write query to retrieve all product information
         String sql = "SELECT productId, productName, productPrice FROM product";
         boolean hasWhere = false;
 
@@ -124,7 +186,6 @@
 
         ResultSet rst = pstmt.executeQuery();
 
-        // Print table header
         %>
         <table class="cart-table">
             <tr>
@@ -133,7 +194,6 @@
                 <th>Action</th>
             </tr>
         <%
-        // Parse each product and display
         NumberFormat currFormat = NumberFormat.getCurrencyInstance();
         while (rst.next()) {
             int productId = rst.getInt("productId");
@@ -157,6 +217,3 @@
     }
     %>
 </div>
-
-</body>
-</html>

@@ -8,24 +8,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Jacob Grocery Order Processing</title>
+    <title>Jacob Grocery - Order Processing</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff8e1; /* Subtle warm background */
+        }
+        .header {
+            background: linear-gradient(135deg, #FF7E00, #FF4500, #FFD700);
+            padding: 20px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-family: 'Arial Black', sans-serif;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .content-container {
+            margin: 40px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            text-align: center;
+            padding: 10px;
+        }
+        th {
+            background-color: #FF7E00;
+            color: white;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            font-size: 18px;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #FF7E00, #FF4500);
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .button:hover {
+            background: #FF4500;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 <body>
 
+<div class="header">
+    <h1>Order Processing</h1>
+</div>
+
+<div class="content-container">
 <% 
-// Get customer id
+// Processing code (same as provided)
 String custId = request.getParameter("customerId");
 @SuppressWarnings({"unchecked"})
 HashMap<String, ArrayList<Object>> productList = (HashMap<String, ArrayList<Object>>) session.getAttribute("productList");
-
-// Determine if valid customer id was entered
-// Determine if there are products in the shopping cart
-// If either are not true, display an error message
-
-//Validate that the customer ID is a number and exists in the database
 int customerId = -1;
 try {
-    customerId = Integer.parseInt(custId); // Check if customerId is numeric
+    customerId = Integer.parseInt(custId);
 } catch (NumberFormatException e) {
     out.println("<p>Error: Invalid customer ID format. Please enter a numeric customer ID.</p>");
     return;
@@ -36,25 +101,19 @@ if (productList == null || productList.isEmpty()) {
     return;
 }
 
-// SQL Server connection information
 String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True";
 String username = "sa";
 String password = "304#sa#pw";
 
 try {
-    // Establish database connection
     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
     try (Connection conn = DriverManager.getConnection(url, username, password)) {
-
-        // Validate that the customer ID exists in the database
         String validateCustomerQuery = "SELECT COUNT(*) AS customerCount FROM customer WHERE customerId = ?";
         try (PreparedStatement custStmt = conn.prepareStatement(validateCustomerQuery)) {
             custStmt.setInt(1, customerId);
             try (ResultSet custResult = custStmt.executeQuery()) {
                 custResult.next();
                 int customerCount = custResult.getInt("customerCount");
-
-                // If customer ID doesn't exist, display an error and stop further processing
                 if (customerCount == 0) {
                     out.println("<p>Error: Customer ID does not exist. Please enter a valid customer ID.</p>");
                     return;
@@ -62,9 +121,6 @@ try {
             }
         }
 
-        // Save order information to database
-
-        // Insert into ordersummary table and retrieve auto-generated id
         String orderQuery = "INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (?, GETDATE(), 0)";
         PreparedStatement orderStmt = conn.prepareStatement(orderQuery, Statement.RETURN_GENERATED_KEYS);
         orderStmt.setInt(1, customerId);
@@ -73,8 +129,6 @@ try {
         keys.next();
         int orderId = keys.getInt(1);
 
-        // Insert each item into OrderProduct table using OrderId from previous INSERT
-        // Traverse list of products and store each ordered product in the orderproduct table
         String orderProductQuery = "INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (?, ?, ?, ?)";
         PreparedStatement productStmt = conn.prepareStatement(orderProductQuery);
         double totalAmount = 0.0;
@@ -93,8 +147,6 @@ try {
             totalAmount += price * quantity;
         }
 
-        // Update total amount for order record
-        // Update total amount for the order in OrderSummary table
         String updateOrderTotal = "UPDATE ordersummary SET totalAmount = ? WHERE orderId = ?";
         try (PreparedStatement updateStmt = conn.prepareStatement(updateOrderTotal)) {
             updateStmt.setDouble(1, totalAmount);
@@ -102,12 +154,10 @@ try {
             updateStmt.executeUpdate();
         }
 
-        // Print out order summary
-        // Display order information including all ordered items
         out.println("<h2>Order Placed Successfully</h2>");
         out.println("<p>Order ID: " + orderId + "</p>");
         out.println("<p>Total Amount: " + NumberFormat.getCurrencyInstance().format(totalAmount) + "</p>");
-        out.println("<table border='1'><tr><th>Product ID</th><th>Product Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>");
+        out.println("<table><tr><th>Product ID</th><th>Product Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>");
         for (Map.Entry<String, ArrayList<Object>> entry : productList.entrySet()) {
             ArrayList<Object> product = entry.getValue();
             int productId = Integer.parseInt((String) product.get(0));
@@ -121,16 +171,16 @@ try {
                         NumberFormat.getCurrencyInstance().format(total) + "</td></tr>");
         }
         out.println("</table>");
-
-        // Clear cart if order placed successfully
-        // Clear the shopping cart (sessional variable) after order has been successfully placed
         session.removeAttribute("productList");
-
-    } // Connection is closed automatically
+    }
 } catch (Exception e) {
     out.println("<p>Error: " + e.getMessage() + "</p>");
 }
 %>
+    <div class="button-container">
+        <a href="index.jsp" class="button">Back to Menu</a>
+    </div>
+</div>
 
 </body>
 </html>

@@ -6,39 +6,42 @@ String username = request.getParameter("username");
 String password = request.getParameter("password");
 String retStr = null;
 
-if(username == null || password == null) {
-    out.println("Username or password is null");
-    return;
-}
-if((username.length() == 0) || (password.length() == 0)) {
-    out.println("Username or password is empty");
-    return;
-}
+// Error message to display
+String loginMessage = null;
 
-try {
-    getConnection();
-    // Check if userId and password match some customer account. If so, set retStr to be the username.
-    String SQL = "SELECT userid, password FROM customer WHERE userid=? AND password=?";
-    PreparedStatement pstmt = con.prepareStatement(SQL);
-    pstmt.setString(1, username);
-    pstmt.setString(2, password);
-    ResultSet rs = pstmt.executeQuery();
-    if (rs.next()) {
-        String userId = rs.getString("userid");
-        retStr = userId;
+// Validate input
+if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+    loginMessage = "Username and password cannot be empty.";
+} else {
+    try {
+        getConnection();
+        String SQL = "SELECT userid, password FROM customer WHERE userid=? AND password=?";
+        PreparedStatement pstmt = con.prepareStatement(SQL);
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            retStr = rs.getString("userid");
+        }
+        rs.close();
+        pstmt.close();
+    } catch (SQLException ex) {
+        loginMessage = "Database error occurred. Please try again.";
+    } finally {
+        closeConnection();
     }
-    rs.close();
-    pstmt.close();
-} catch (SQLException ex) {
-    out.println(ex);
-} finally {
-    closeConnection();
 }
 
 if (retStr != null) {
+    // Successful login
     session.setAttribute("authenticatedUser", retStr);
     response.sendRedirect("index.jsp");
 } else {
-    out.println("Invalid username or password");
+    // Failed login
+    if (loginMessage == null) {
+        loginMessage = "Invalid username or password.";
+    }
+    session.setAttribute("loginMessage", loginMessage);
+    request.getRequestDispatcher("login.jsp").forward(request, response);
 }
 %>

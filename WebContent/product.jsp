@@ -8,33 +8,50 @@
     body {
         font-family: Arial, sans-serif;
         margin: 0;
-        padding: 20px;
-        background-color: #f4f4f4;
-        text-align: center;
+        padding: 0;
+        background-color: #fff8e1;
     }
     .container {
         max-width: 800px;
-        margin: 0 auto;
+        margin: 20px auto;
         background: #fff;
         padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        text-align: center;
     }
     h2, h4 {
-        color: #333;
+        color: #FF4500;
+        margin: 10px 0;
+    }
+    .product-image {
+        margin: 20px 0;
+    }
+    .product-image img {
+        max-height: 250px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     .button {
         display: inline-block;
         padding: 10px 20px;
         font-size: 1em;
         color: #fff;
-        background-color: #007bff;
+        background-color: #FF7E00;
         text-decoration: none;
         border-radius: 5px;
         text-align: center;
-        margin-top: 20px;
+        margin: 10px 10px 20px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
     }
     .button:hover {
-        background-color: #0056b3;
+        background-color: #FF4500;
+        transform: scale(1.05);
+    }
+    .not-found {
+        font-size: 1.5em;
+        color: #FF4500;
+        margin: 20px 0;
     }
 </style>
 </head>
@@ -49,7 +66,7 @@
     try {   
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
     } catch (java.lang.ClassNotFoundException e) {
-        out.println("ClassNotFoundException: " +e);
+        out.println("<div class='not-found'>Error: ClassNotFoundException: " + e + "</div>");
     }
 
     // Make the connection
@@ -71,7 +88,7 @@
         // If there is a productImageURL, display using IMG tag
         String imageUrl = rst.getString("productImageURL");
         if(imageUrl != null && !imageUrl.isEmpty()) {
-            out.println("<p><img height=250px src=\"" + imageUrl + "\"></p>");
+            out.println("<div class='product-image'><img src=\"" + imageUrl + "\" alt='Product Image'></div>");
         }
 
         // Display product details
@@ -79,10 +96,10 @@
         out.println("<h4><b>Price:</b> $"+rst.getString("productPrice")+"</h4>");
 
         // Add links to Add to Cart and Continue Shopping
-        out.println("<a href=\"addcart.jsp?id=" + prodid + "&name=" + name + "&price=" + rst.getString("productPrice") + "&newqty=1" + "\" class=\"button\">Add to cart</a>");
+        out.println("<a href=\"addcart.jsp?id=" + prodid + "&name=" + name + "&price=" + rst.getString("productPrice") + "&newqty=1\" class=\"button\">Add to Cart</a>");
         out.println("<a href='listprod.jsp' class=\"button\">Continue Shopping</a>");
     } else {
-        out.println("<h2>Product not found.</h2>");
+        out.println("<div class='not-found'>Product not found.</div>");
     }
 
     rst.close();
