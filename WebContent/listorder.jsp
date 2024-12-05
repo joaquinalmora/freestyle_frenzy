@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Shop Grocery Order List</title>
+    <title>Freestyle Frenzy Order List</title>
     <style>
         body {
             margin: 0;

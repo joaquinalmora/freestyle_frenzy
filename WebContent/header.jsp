@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Jacob's Grocery</title>
+    <title>Freestyle Frenzy</title>
     <style>
         body {
             margin: 0;

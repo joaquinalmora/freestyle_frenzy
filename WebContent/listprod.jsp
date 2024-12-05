@@ -108,8 +108,6 @@
     }
 </style>
 
-</style>
-
 <div class="cart-container">
     <div class="search-container">
         <form method="get" action="listprod.jsp">

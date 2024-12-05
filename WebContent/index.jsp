@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Jacob's Grocery Main Page</title>
+    <title>Freestyle Frenzy Main Page</title>
     <style>
         body {
             margin: 0;
