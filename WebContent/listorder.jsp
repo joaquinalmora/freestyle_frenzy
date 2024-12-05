@@ -93,7 +93,7 @@
 <body>
     <div class="header">
         <a href="customer.jsp" class="back-button">Back</a>
-        <h1>Your Shop's Order List</h1>
+        <h1>Your Freestyle Frenzy's Order List</h1>
     </div>
 
 <%

@@ -174,6 +174,7 @@ INSERT INTO category(categoryName) VALUES ('Bindings');
 INSERT INTO category(categoryName) VALUES ('Goggles');
 INSERT INTO category(categoryName) VALUES ('Gloves');
 INSERT INTO category(categoryName) VALUES ('Headwear');
+INSERT INTO category(categoryName) VALUES ('New Releases');
 
 -- Insert product data
 INSERT INTO product(productName, categoryId, productDesc, productPrice) VALUES ('Armada ARV 84 Skis - Junior 2025', 1, 'Designed for tackling powder and launching off any available feature.', 529.99);
@@ -237,6 +238,8 @@ INSERT INTO customers (userid, password) VALUES ('user', 'password');
 INSERT INTO paymentmethod (paymentType, paymentNumber, paymentExpiryDate, customerId)
 VALUES ('Credit Card', '1234-5678-9012-3456', '2025-12-31', 1);
 
+
+
 -- Order 1 can be shipped as have enough inventory
 DECLARE @orderId int
 INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (1, '2019-10-15 10:25:55', 91.70)
@@ -268,6 +271,52 @@ SELECT @orderId = @@IDENTITY
 INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 5, 4, 21.35)
 INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 19, 2, 81)
 INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 20, 3, 10);
+
+
+
+CREATE TRIGGER trg_EnsureFuturePaymentExpiryDate
+ON paymentmethod
+FOR INSERT, UPDATE
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM inserted WHERE paymentExpiryDate <= GETDATE())
+    BEGIN
+        RAISERROR ('Payment expiry date must be in the future.', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+END;
+GO
+
+CREATE TRIGGER trg_EnsureUniqueCustomerEmail
+ON customer
+FOR INSERT, UPDATE
+AS
+BEGIN
+    IF EXISTS (
+        SELECT email
+        FROM customer c
+        JOIN inserted i ON c.email = i.email
+        WHERE c.customerId <> i.customerId
+    )
+    BEGIN
+        RAISERROR ('Customer email must be unique.', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+END;
+GO
+
+CREATE TRIGGER trg_EnsurePositiveProductPrice
+ON product
+FOR INSERT, UPDATE
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM inserted WHERE productPrice <= 0)
+    BEGIN
+        RAISERROR ('Product price must be positive.', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+END;
+GO
 
 
 UPDATE Product SET productImageURL = 'img/1.jpg' WHERE ProductId = 1;
