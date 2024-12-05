@@ -1,1 +1,1 @@
-*Freestyle Frenzy - COSC 304*
+**Freestyle Frenzy - COSC 304**
