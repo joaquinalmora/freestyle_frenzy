@@ -10,9 +10,9 @@
             background-color: #fff8e1; /* Subtle warm background */
         }
         .header {
-            background: linear-gradient(135deg, #FF7E00, #FF4500, #FFD700);
+            background-color: white;
             padding: 20px;
-            color: white;
+            color: black;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
@@ -60,7 +60,7 @@
         }
         input[type="submit"],
         input[type="reset"] {
-            background: linear-gradient(135deg, #FF7E00, #FF4500);
+            background-color: black;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -73,7 +73,8 @@
         }
         input[type="submit"]:hover,
         input[type="reset"]:hover {
-            background: #FF4500;
+            background-color: white;
+            color: black;
             transform: scale(1.05);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }

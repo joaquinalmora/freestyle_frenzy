@@ -8,17 +8,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Jacob Grocery - Order Processing</title>
+    <title>Order Processing</title>
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #fff8e1; /* Subtle warm background */
+            background-color: #fff8e1; 
         }
         .header {
-            background: linear-gradient(135deg, #FF7E00, #FF4500, #FFD700);
+            background-color: white;
             padding: 20px;
-            color: white;
+            color: black;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
@@ -50,7 +50,7 @@
             padding: 10px;
         }
         th {
-            background-color: #FF7E00;
+            background-color: black;
             color: white;
         }
         .button-container {
@@ -62,7 +62,7 @@
             font-size: 18px;
             text-decoration: none;
             color: white;
-            background: linear-gradient(135deg, #FF7E00, #FF4500);
+            background-color: black;
             padding: 10px 20px;
             border-radius: 5px;
             transition: background-color 0.3s ease, transform 0.2s ease;
@@ -70,7 +70,8 @@
             cursor: pointer;
         }
         .button:hover {
-            background: #FF4500;
+            background-color: white;
+            color: black;
             transform: scale(1.05);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }

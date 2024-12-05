@@ -6,7 +6,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #fff8e1; /* Subtle warm background */
+            background-color: #fff8e1; 
         }
         .header {
             background: white;
@@ -19,7 +19,7 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 10px; /* Adds space between the text and the image */
+            gap: 10px; 
         }
         .header h1 {
             margin: 0;
