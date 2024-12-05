@@ -115,3 +115,163 @@ try {
         <br>
         <input type="submit" value="Submit Review">
     </form>   
+<style>
+/* General Styling for the Testimonials Section */
+#testimonials {
+  background-color: #f4f4f4;
+  padding: 60px 20px;
+  font-family: 'Arial', sans-serif;
+  color: #000;
+  text-align: center;
+}
+
+.testimonial-heading span {
+  font-size: 2em;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: inline-block;
+  color: #000000;
+}
+
+.testimonial-box-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonial-box {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  transition: all 0.3s ease;
+  padding: 20px;
+}
+
+.testimonial-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+
+.box-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.profile-img img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ff6b6b;
+}
+
+.name-user {
+  margin-left: 10px;
+  text-align: left;
+}
+
+.name-user strong {
+  font-size: 1.1em;
+  color: #000;
+}
+
+.reviews {
+  color: #000000;
+  font-size: 1.2em;
+}
+
+.client-comment {
+  margin-top: 15px;
+  font-style: italic;
+  color: #555;
+}
+
+.client-comment p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #000;
+}
+
+/* Add Review Form Styling */
+h3 {
+  font-size: 1.5em;
+  color: #000000;
+  margin-top: 40px;
+  text-align: center;
+}
+
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  font-weight: bold;
+  color: #000;
+  display: block;
+  margin: 10px 0 5px;
+}
+
+select, textarea {
+  width: calc(100% - 10px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+  font-family: 'Arial', sans-serif;
+}
+
+input[type="submit"] {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: #333;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .testimonial-box-container {
+    flex-direction: column;
+  }
+  .testimonial-box {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .testimonial-box {
+    width: 100%;
+  }
+  form {
+    width: 100%;
+    box-shadow: none;
+  }
+}
+
+    
+</style>
