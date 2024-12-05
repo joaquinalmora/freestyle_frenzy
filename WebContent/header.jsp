@@ -109,6 +109,7 @@
     </div>
     <div class="buttons-container">
         <%
+<<<<<<< HEAD
 
             String currentUser = (session != null) ? (String) session.getAttribute("authenticatedUser") : null;
             Boolean isAdmin = (session != null) ? (Boolean) session.getAttribute("isAdmin") : false;
@@ -119,6 +120,18 @@
             <button onclick="location.href='customer.jsp'">Profile</button>
 
             <% if (isAdmin != null && isAdmin) { %>
+=======
+            HttpSession localSession = request.getSession(false);
+            String localCurrentUser = (localSession != null) ? (String) localSession.getAttribute("authenticatedUser") : null;
+            Boolean localIsAdmin = (localSession != null) ? (Boolean) localSession.getAttribute("isAdmin") : false;
+        %>
+
+        <% if (localCurrentUser != null) { %>
+            <button onclick="location.href='listprod.jsp'">Shop</button>
+            <button onclick="location.href='customer.jsp'">Profile</button>
+
+            <% if (localIsAdmin != null && localIsAdmin) { %>
+>>>>>>> b9860c0ffde052fbcdcaae84b3fea9e36364f340
                 <button onclick="location.href='admin.jsp'">Admin</button>
                 <button onclick="location.href='listorder.jsp'">All Orders</button>
             <% } %>
@@ -131,8 +144,16 @@
         <a href="showcart.jsp" class="cart-button">
             <span>&#128722;</span>
         </a>
+<<<<<<< HEAD
         <% if (currentUser != null) { %>
             <span class="user-info">Logged in as: <%= currentUser %></span>
         <% } %>
     </div>
 </div>
+=======
+        <% if (localCurrentUser != null) { %>
+            <span class="user-info">Logged in as: <%= localCurrentUser %></span>
+        <% } %>
+    </div>
+</div>
+>>>>>>> b9860c0ffde052fbcdcaae84b3fea9e36364f340
