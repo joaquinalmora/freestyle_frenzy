@@ -2,6 +2,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <style>
+    /* Universal font settings for consistency across pages */
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif; /* Set universal font */
+        font-size: 16px; /* Default font size */
+        color: #333; /* Default text color */
+        background-color: #fff8e1; /* Subtle warm background */
+    }
+
     /* General header styles */
     .header {
         background: white;
@@ -21,8 +30,17 @@
     .header h1 {
         margin: 0;
         font-family: 'Arial Black', sans-serif;
+        font-size: 24px; /* Ensure consistent size */
         letter-spacing: 2px;
         color: black;
+    }
+
+    .header-left a {
+        text-decoration: none;
+    }
+
+    .header-left a:hover h1 {
+        color: #FF4500; /* Optional hover effect */
     }
 
     .header img {
@@ -84,12 +102,13 @@
 
 <div class="header">
     <div class="header-left">
-        <h1>Freestyle Frenzy</h1>
+        <a href="index.jsp">
+            <h1>Freestyle Frenzy</h1>
+        </a>
         <img src="img/Freestyle.png" alt="Freestyle Logo">
     </div>
     <div class="buttons-container">
         <%
-            // Avoid duplicate declarations by checking if session variables are already defined
             HttpSession localSession = request.getSession(false);
             String localCurrentUser = (localSession != null) ? (String) localSession.getAttribute("authenticatedUser") : null;
             Boolean localIsAdmin = (localSession != null) ? (Boolean) localSession.getAttribute("isAdmin") : false;
@@ -109,7 +128,6 @@
             <button onclick="location.href='listprod.jsp'">Shop</button>
         <% } %>
 
-        <!-- Shopping cart button -->
         <a href="showcart.jsp" class="cart-button">
             <span>&#128722;</span>
         </a>
