@@ -105,7 +105,4 @@
     rst.close();
     pstmt.close();
     con.close();
-    %>
-</div>
-</body>
-</html>
+%>
