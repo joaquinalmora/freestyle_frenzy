@@ -6,7 +6,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #fff8e1; /* Subtle warm background */
+            background-color: #fff8e1; 
         }
         .header {
             background: white;
@@ -19,7 +19,7 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 10px; /* Adds space between the text and the image */
+            gap: 10px; 
         }
         .header h1 {
             margin: 0;
@@ -85,15 +85,38 @@
             width: 100%;
             height: auto;
             display: block;
+            position: relative;
         }
+        .text-overlay {
+    position: absolute;
+    top: 5%;
+    left: 2%;
+    color: white;
+    font-size: 30px; /* Responsive font size */
+    font-weight: bold;
+    width: 40%;
+    max-width: 600px; /* Limit max width for better readability */
+    
+    padding: 30px; /* Increased padding */
+    border-radius: 15px; /* More rounded corners */
+    
+    line-height: 1.8; /* Increase line spacing */
+}
     </style>
 </head>
 <body>
 
 <jsp:include page="header.jsp"/>
 
-<!-- Full-width image -->
-<img src="img/Home2.jpg" alt="Welcome to Freestyle Frenzy" class="home-image">
+<!-- Full-width image with text overlay -->
+<div style="position: relative;">
+    <img src="img/Home2.jpg" alt="Welcome to Freestyle Frenzy" class="home-image">
+    <div class="text-overlay">
+        Having the best gear isn't just about looking good its about trusting every turn, 
+        every jump, and every landing. When you're out there pushing limits, your gear is 
+        your partner, and you  want the best partner you can get.
+    </div>
+</div>
 
 <%@ include file="listprod.jsp" %>
 
