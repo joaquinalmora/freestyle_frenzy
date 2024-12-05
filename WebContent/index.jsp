@@ -90,7 +90,7 @@
 </head>
 <body>
 
-<%@include file="header.jsp"%>
+<jsp:include page="header.jsp"/>
 
 <!-- Full-width image -->
 <img src="img/Home2.jpg" alt="Welcome to Freestyle Frenzy" class="home-image">

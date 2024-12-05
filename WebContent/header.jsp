@@ -100,6 +100,17 @@
     }
 </style>
 
+
+<%
+    // Declare variables once at the top
+    String currentUser = null;
+    Boolean isAdmin = false;
+    if (session != null) {
+        currentUser = (String) session.getAttribute("authenticatedUser");
+        isAdmin = (Boolean) session.getAttribute("isAdmin");
+    }
+%>
+
 <div class="header">
     <div class="header-left">
         <a href="index.jsp">
@@ -108,17 +119,11 @@
         <img src="img/Freestyle.png" alt="Freestyle Logo">
     </div>
     <div class="buttons-container">
-        <%
-            HttpSession localSession = request.getSession(false);
-            String localCurrentUser = (localSession != null) ? (String) localSession.getAttribute("authenticatedUser") : null;
-            Boolean localIsAdmin = (localSession != null) ? (Boolean) localSession.getAttribute("isAdmin") : false;
-        %>
-
-        <% if (localCurrentUser != null) { %>
+        <% if (currentUser != null) { %>
             <button onclick="location.href='listprod.jsp'">Shop</button>
             <button onclick="location.href='customer.jsp'">Profile</button>
 
-            <% if (localIsAdmin != null && localIsAdmin) { %>
+            <% if (isAdmin != null && isAdmin) { %>
                 <button onclick="location.href='admin.jsp'">Admin</button>
                 <button onclick="location.href='listorder.jsp'">All Orders</button>
             <% } %>
@@ -131,8 +136,8 @@
         <a href="showcart.jsp" class="cart-button">
             <span>&#128722;</span>
         </a>
-        <% if (localCurrentUser != null) { %>
-            <span class="user-info">Logged in as: <%= localCurrentUser %></span>
+        <% if (currentUser != null) { %>
+            <span class="user-info">Logged in as: <%= currentUser %></span>
         <% } %>
     </div>
 </div>

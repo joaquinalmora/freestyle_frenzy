@@ -126,7 +126,7 @@
 <div class="cart-container">
     <div class="search-container">
         <form method="get" action="listprod.jsp">
-            <input type="text" name="productName" placeholder="Product Name" size="50">
+            <input type="text" name="productName" placeholder="Product Name" size="50" value="<%= request.getParameter("productName") != null ? request.getParameter("productName") : "" %>">
             <select name="category">
                 <option value="">All Categories</option>
                 <% 
@@ -143,7 +143,7 @@
                             String catId = rst.getString(1);
                             String catName = rst.getString(2);
                             %>
-                            <option value="<%= catId %>"><%= catName %></option>
+                            <option value="<%= catId %>" <%= request.getParameter("category") != null && request.getParameter("category").equals(catId) ? "selected" : "" %>><%= catName %></option>
                             <%
                         }
                     }
@@ -151,6 +151,11 @@
                     out.println("Error: " + e);
                 }
                 %>
+            </select>
+            <label for="sort">Sort by:</label>
+            <select name="sort" id="sort">
+                <option value="default" <%= "default".equals(request.getParameter("sort")) ? "selected" : "" %>>Default</option>
+                <option value="mostSold" <%= "mostSold".equals(request.getParameter("sort")) ? "selected" : "" %>>Most Sold</option>
             </select>
             <input type="submit" value="Search">
         </form>
@@ -160,7 +165,9 @@
         <%
         String name = request.getParameter("productName");
         String categoryId = request.getParameter("category");
+        String sort = request.getParameter("sort");
         if (name == null) name = "";
+        if (sort == null) sort = "default";
 
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -169,7 +176,9 @@
         }
 
         try (Connection con = DriverManager.getConnection(url, uid, pw)) {
-            String sql = "SELECT productId, productName, productPrice FROM product";
+            String sql = "SELECT p.productId, p.productName, p.productPrice, SUM(op.quantity) AS totalSold " +
+                         "FROM product p " +
+                         "LEFT JOIN orderproduct op ON p.productId = op.productId";
             boolean hasWhere = false;
 
             if (!name.isEmpty() || (categoryId != null && !categoryId.isEmpty())) {
@@ -178,14 +187,20 @@
             }
 
             if (!name.isEmpty()) {
-                sql += "productName LIKE ?";
+                sql += "p.productName LIKE ?";
             }
 
             if (categoryId != null && !categoryId.isEmpty()) {
                 if (hasWhere && !name.isEmpty()) {
                     sql += " AND ";
                 }
-                sql += "categoryId = ?";
+                sql += "p.categoryId = ?";
+            }
+
+            sql += " GROUP BY p.productId, p.productName, p.productPrice";
+
+            if ("mostSold".equals(sort)) {
+                sql += " ORDER BY totalSold DESC";
             }
 
             PreparedStatement pstmt = con.prepareStatement(sql);
