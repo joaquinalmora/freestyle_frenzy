@@ -90,43 +90,7 @@
 </head>
 <body>
 
-<div class="header">
-    <div class="header-left">
-        <h1>Freestyle Frenzy</h1>
-        <img src="img/Freestyle.png" alt="Freestyle Logo">
-    </div>
-    <div class="buttons-container">
-        <% 
-            String currentUser = (String) session.getAttribute("authenticatedUser");
-            Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
-    
-            if (currentUser != null) { 
-        %>
-            <button onclick="location.href='listprod.jsp'">Shop</button>
-            <button onclick="location.href='customer.jsp'">Profile</button>
-    
-            <% if (isAdmin != null && isAdmin) { %>
-                <button onclick="location.href='admin.jsp'">Admin</button>
-                <button onclick="location.href='listorder.jsp'">All Orders</button>
-            <% } %>
-            <button onclick="location.href='logout.jsp'">Log out</button>
-        <% 
-            } else { 
-        %>
-            <button onclick="location.href='login.jsp'">Login</button>
-            <button onclick="location.href='listprod.jsp'">Shop</button>
-        <% 
-            } 
-        %>
-        <!-- Shopping cart button -->
-        <a href="showcart.jsp" class="cart-button">
-            <span>&#128722;</span>
-        </a>
-        <% if (currentUser != null) { %>
-            <span class="user-info">Logged in as: <%= currentUser %></span>
-        <% } %>
-    </div>
-</div>
+<%@include file="header.jsp"%>
 
 <!-- Full-width image -->
 <img src="img/Home2.jpg" alt="Welcome to Freestyle Frenzy" class="home-image">
