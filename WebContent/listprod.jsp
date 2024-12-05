@@ -110,21 +110,6 @@
     }
 </style>
 
-<<<<<<< HEAD
-<%@ include file="header.jsp" %>
-
-<div class="cart-container">
-    <div class="search-container">
-        <form method="get" action="listprod.jsp">
-            <input type="text" name="productName" placeholder="Product Name" size="50" value="<%= request.getParameter("productName") != null ? request.getParameter("productName") : "" %>">
-            <select name="category">
-                <option value="">All Categories</option>
-                <% 
-                String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True";
-                String uid = "sa";
-                String pw = "304#sa#pw";
-
-=======
 <%
     // Get the current page name
     String currentPage = request.getServletPath();
@@ -149,7 +134,6 @@
                 String uid = "sa";
                 String pw = "304#sa#pw";
 
->>>>>>> b9860c0ffde052fbcdcaae84b3fea9e36364f340
                 try {
                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                     try (Connection con = DriverManager.getConnection(url, uid, pw)) {
@@ -159,11 +143,7 @@
                             String catId = rst.getString(1);
                             String catName = rst.getString(2);
                             %>
-<<<<<<< HEAD
-                            <option value="<%= catId %>" <%= request.getParameter("category") != null && request.getParameter("category").equals(catId) ? "selected" : "" %>><%= catName %></option>
-=======
                             <option value="<%= catId %>"><%= catName %></option>
->>>>>>> b9860c0ffde052fbcdcaae84b3fea9e36364f340
                             <%
                         }
                     }
@@ -172,14 +152,6 @@
                 }
                 %>
             </select>
-<<<<<<< HEAD
-            <label for="sort">Sort by:</label>
-            <select name="sort" id="sort">
-                <option value="default" <%= "default".equals(request.getParameter("sort")) ? "selected" : "" %>>Default</option>
-                <option value="mostSold" <%= "mostSold".equals(request.getParameter("sort")) ? "selected" : "" %>>Most Sold</option>
-            </select>
-=======
->>>>>>> b9860c0ffde052fbcdcaae84b3fea9e36364f340
             <input type="submit" value="Search">
         </form>
     </div>
@@ -297,8 +269,4 @@
         font-size: 16px;
         margin-bottom: 10px;
     }
-<<<<<<< HEAD
 </style>
-=======
-</style>
->>>>>>> b9860c0ffde052fbcdcaae84b3fea9e36364f340
