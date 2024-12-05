@@ -1,6 +1,8 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.io.*" %>
+
 <style>
     body {
         margin: 0;
@@ -108,6 +110,19 @@
     }
 </style>
 
+<%
+    // Get the current page name
+    String currentPage = request.getServletPath();
+    boolean isIndexPage = currentPage != null && currentPage.equalsIgnoreCase("/index.jsp");
+
+    // Include the header only if it's not index.jsp
+    if (!isIndexPage) {
+%>
+<%@ include file="header.jsp" %>
+<%
+    }
+%>
+
 <div class="cart-container">
     <div class="search-container">
         <form method="get" action="listprod.jsp">
@@ -141,77 +156,117 @@
         </form>
     </div>
 
-    <%
-    String name = request.getParameter("productName");
-    String categoryId = request.getParameter("category");
-    if (name == null) name = "";
+    <div class="product-cards-container">
+        <%
+        String name = request.getParameter("productName");
+        String categoryId = request.getParameter("category");
+        if (name == null) name = "";
 
-    try {
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    } catch (java.lang.ClassNotFoundException e) {
-        out.println("ClassNotFoundException: " + e);
-    }
-
-    try (Connection con = DriverManager.getConnection(url, uid, pw)) {
-        String sql = "SELECT productId, productName, productPrice FROM product";
-        boolean hasWhere = false;
-
-        if (!name.isEmpty() || (categoryId != null && !categoryId.isEmpty())) {
-            sql += " WHERE ";
-            hasWhere = true;
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        } catch (java.lang.ClassNotFoundException e) {
+            out.println("ClassNotFoundException: " + e);
         }
 
-        if (!name.isEmpty()) {
-            sql += "productName LIKE ?";
-        }
+        try (Connection con = DriverManager.getConnection(url, uid, pw)) {
+            String sql = "SELECT productId, productName, productPrice FROM product";
+            boolean hasWhere = false;
 
-        if (categoryId != null && !categoryId.isEmpty()) {
-            if (hasWhere && !name.isEmpty()) {
-                sql += " AND ";
+            if (!name.isEmpty() || (categoryId != null && !categoryId.isEmpty())) {
+                sql += " WHERE ";
+                hasWhere = true;
             }
-            sql += "categoryId = ?";
+
+            if (!name.isEmpty()) {
+                sql += "productName LIKE ?";
+            }
+
+            if (categoryId != null && !categoryId.isEmpty()) {
+                if (hasWhere && !name.isEmpty()) {
+                    sql += " AND ";
+                }
+                sql += "categoryId = ?";
+            }
+
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            int paramIndex = 1;
+
+            if (!name.isEmpty()) {
+                pstmt.setString(paramIndex++, "%" + name + "%");
+            }
+            if (categoryId != null && !categoryId.isEmpty()) {
+                pstmt.setString(paramIndex, categoryId);
+            }
+
+            ResultSet rst = pstmt.executeQuery();
+
+            NumberFormat currFormat = NumberFormat.getCurrencyInstance();
+            while (rst.next()) {
+                int productId = rst.getInt("productId");
+                String productName = rst.getString("productName");
+                double price = rst.getDouble("productPrice");
+
+                String addCartLink = "addcart.jsp?id=" + productId + "&name=" + URLEncoder.encode(productName, "UTF-8") + "&price=" + price;
+                %>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="img/<%= productId %>.jpg" alt="<%= productName %>" />
+                    </div>
+                    <div class="product-details">
+                        <a href="product.jsp?id=<%= productId %>" class="product-name"><%= productName %></a>
+                        <p class="product-price"><%= currFormat.format(price) %></p>
+                        <a href="<%= addCartLink %>" class="add-to-cart">Add to Cart</a>
+                    </div>
+                </div>
+                <%
+            }
+        } catch (Exception e) {
+            out.println("Exception: " + e);
         }
-
-        PreparedStatement pstmt = con.prepareStatement(sql);
-        int paramIndex = 1;
-
-        if (!name.isEmpty()) {
-            pstmt.setString(paramIndex++, "%" + name + "%");
-        }
-        if (categoryId != null && !categoryId.isEmpty()) {
-            pstmt.setString(paramIndex, categoryId);
-        }
-
-        ResultSet rst = pstmt.executeQuery();
-
         %>
-        <table class="cart-table">
-            <tr>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Action</th>
-            </tr>
-        <%
-        NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-        while (rst.next()) {
-            int productId = rst.getInt("productId");
-            String productName = rst.getString("productName");
-            double price = rst.getDouble("productPrice");
-
-            String addCartLink = "addcart.jsp?id=" + productId + "&name=" + URLEncoder.encode(productName, "UTF-8") + "&price=" + price;
-            %>
-            <tr>
-                <td><a href="product.jsp?id=<%= productId %>"><%= productName %></a></td>
-                <td><%= currFormat.format(price) %></td>
-                <td><a href="<%= addCartLink %>" class="add-to-cart">Add to Cart</a></td>
-            </tr>
-            <%
-        }
-        %>
-        </table>
-        <%
-    } catch (Exception e) {
-        out.println("Exception: " + e);
-    }
-    %>
+    </div>
 </div>
+
+<style>
+    .product-cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .product-card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    .product-image img {
+        width: 100%;
+        height: auto;
+    }
+    .product-details {
+        padding: 15px;
+    }
+    .product-name {
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        color: black;
+        display: block;
+        margin-bottom: 10px;
+    }
+    .product-name:hover {
+        color: #FF4500;
+    }
+    .product-price {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+</style>
