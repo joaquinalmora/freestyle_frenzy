@@ -34,79 +34,84 @@ try {
     rst2 = pstmt3.executeQuery();
 
     out.println("<section id='testimonials'>");
-    out.println("<div class='testimonial-heading'>");
-    out.println("<span>Comments</span>");
-    out.println("<h4>Clients Say</h4>");
-    out.println("</div>");
-    out.println("<div class='testimonial-box-container'>");
-
-    while (rst2.next()) {
-        int outrating = rst2.getInt("reviewRating");
-        String outreviewdate = rst2.getString("reviewDate");
-        String outcustid = rst2.getString("firstName");
-        String outcomment = rst2.getString("reviewComment");
-
-        // Check if the user is logged in
-        String authenticatedUser = (String) session.getAttribute("authenticatedUser");
-        if (authenticatedUser == null) {
-            outcustid = "Guest";
-        }
-
-        out.println("<div class='testimonial-box'>");
-        out.println("<div class='box-top'>");
-        out.println("<div class='profile'>");
-        out.println("<div class='profile-img'>");
-        out.println("<img src='https://cdn3.iconfinder.com/data/icons/avatars-15/64/_Ninja-2-512.png' />");
+        out.println("<div class='testimonial-heading'>");
+        out.println("<span>Reviews</span>");
         out.println("</div>");
-        out.println("<div class='name-user'>");
-        out.println("<strong>" + (outcustid != null ? outcustid : "Anonymous") + "</strong>");
-        out.println("</div>");
-        out.println("</div>");
-        out.println("<div class='reviews'>");
-
-        for (int i = 1; i <= 5; i++) {
-            if (i <= outrating) {
-                out.println("<i class='fas fa-star'></i>");
-            } else {
-                out.println("<i class='far fa-star'></i>");
+        out.println("<div class='testimonial-box-container'>");
+        
+        while (rst2.next()) {
+            int outrating = rst2.getInt("reviewRating");
+            String outreviewdate = rst2.getString("reviewDate");
+            String outcustid = rst2.getString("firstName");
+            String outcomment = rst2.getString("reviewComment");
+        
+            // Handle anonymous or guest users
+            String authenticatedUser = (String) session.getAttribute("authenticatedUser");
+            if (authenticatedUser == null) {
+                outcustid = "Guest";
             }
+        
+            out.println("<div class='testimonial-box'>");
+            out.println("<div class='box-top'>");
+        
+            // Profile details
+            out.println("<div class='profile'>");
+            out.println("<div class='profile-img'>");
+            out.println("<img src='https://cdn3.iconfinder.com/data/icons/avatars-15/64/_Ninja-2-512.png' alt='Profile Picture'/>");
+            out.println("</div>");
+            out.println("<div class='name-user'>");
+            out.println("<strong>" + (outcustid != null ? outcustid : "Anonymous") + "</strong>");
+            out.println("</div>");
+            out.println("</div>"); // Close profile
+        
+            // Star rating
+            out.println("<div class='reviews'>");
+            for (int i = 1; i <= 5; i++) {
+                if (i <= outrating) {
+                    out.println("<i class='fas fa-star'></i>");
+                } else {
+                    out.println("<i class='far fa-star'></i>");
+                }
+            }
+            out.println("</div>"); // Close reviews
+        
+            out.println("</div>"); // Close box-top
+        
+            // Client comment
+            out.println("<div class='client-comment'>");
+            out.println("<p><strong>Rating: " + outrating + "/5</strong></p>");
+            out.println("<p>" + outcomment + "</p>");
+            out.println("</div>"); // Close client-comment
+        
+            out.println("</div>"); // Close testimonial-box
         }
-
-        out.println("</div>");
-        out.println("<div class='client-comment'>");
-        out.println("<p><strong>Rating: " + outrating + "/5</strong></p>");
-        out.println("<p>" + outcomment + "</p>");
-        out.println("</div>");
-        out.println("</div>");
+        
+        out.println("</div>"); // Close testimonial-box-container
+        out.println("</section>");
+    } catch (SQLException ex) {
+        out.println("<div class='not-found'>Error: " + ex.getMessage() + "</div>");
+    } finally {
+        if (rst2 != null) try { rst2.close(); } catch (SQLException ignore) {}
+        if (pstmt2 != null) try { pstmt2.close(); } catch (SQLException ignore) {}
+        if (pstmt3 != null) try { pstmt3.close(); } catch (SQLException ignore) {}
+        if (con != null) try { con.close(); } catch (SQLException ignore) {}
     }
-
-    out.println("</div>");
-    out.println("</section>");
-
-} catch (SQLException ex) {
-    out.println("<div class='not-found'>Error: " + ex.getMessage() + "</div>");
-} finally {
-    if (rst2 != null) try { rst2.close(); } catch (SQLException ignore) {}
-    if (pstmt2 != null) try { pstmt2.close(); } catch (SQLException ignore) {}
-    if (pstmt3 != null) try { pstmt3.close(); } catch (SQLException ignore) {}
-    if (con != null) try { con.close(); } catch (SQLException ignore) {}
-}
-%>
-
-<h3>Add a Review:</h3>
-<form method="post" action="product.jsp">
-    <input type="hidden" name="id" value="<%= prodid %>">
-    <label for="rating">Rating:</label>
-    <select name="rating" id="rating">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
-    <br>
-    <label for="comment">Comment:</label>
-    <textarea name="comment" id="comment" rows="4" cols="50"></textarea>
-    <br>
-    <input type="submit" value="Submit Review">
-</form>
+    %>
+    
+    <h3>Add a Review:</h3>
+    <form method="post" action="product.jsp">
+        <input type="hidden" name="id" value="<%= prodid %>">
+        <label for="rating">Rating:</label>
+        <select name="rating" id="rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <br>
+        <label for="comment">Comment:</label>
+        <textarea name="comment" id="comment" rows="4" cols="50"></textarea>
+        <br>
+        <input type="submit" value="Submit Review">
+    </form>   

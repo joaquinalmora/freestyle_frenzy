@@ -24,7 +24,7 @@
     }
 
     h2, h4 {
-        color: #FF4500;
+        color: #000000;
         margin: 10px 0;
     }
 
@@ -42,7 +42,7 @@
         display: inline-block;
         padding: 10px 20px;
         margin: 10px 5px;
-        background-color: #FF4500;
+        background-color: #000000;
         color: white;
         text-decoration: none;
         border-radius: 5px;
