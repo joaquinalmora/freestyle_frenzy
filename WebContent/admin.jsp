@@ -3,52 +3,121 @@
 <%@ include file="header.jsp" %>
 <%@ include file="jdbc.jsp" %>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Admin Page</title>
-<style>
-    .message {
-        font-size: 1.2em;
-        margin: 20px 0;
-        text-align: center;
-    }
-    .error {
-        color: red;
-    }
-    .back-button {
-        font-size: 1.2em;
-        padding: 10px 20px;
-        background-color: #333;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        margin-top: 40px;
-        display: block;
-        text-align: center;
-    }
-    table {
-        border-collapse: collapse;
-        width: 80%;
-        margin: 0 auto;
-    }
-    table, th, td {
-        border: 1px solid black;
-    }
-    th, td {
-        padding: 10px;
-        text-align: center;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff8e1;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #fff8e1;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        header nav ul li {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .message {
+            font-size: 1.2em;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .back-button {
+            font-size: 1em;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px auto;
+            display: inline-block;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin: 20px auto;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            font-size: 1em;
+        }
+
+        th {
+            background-color: #000000;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .error-message {
+            color: #d9534f;
+            font-size: 1.2em;
+            text-align: center;
+            margin: 20px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav>
-            <ul style="list-style-type: none; padding: 0;">
+            <ul>
                 <%
                 String userName = (String) session.getAttribute("authenticatedUser");
-                if (userName != null) {
-                    out.println("<li class='message'>Logged in as: " + userName + "</li>");
-                } else {
+                if (userName == null) {
                     out.println("<li class='message error'>You must be logged in to access the administrator page.</li>");
                 }
                 %>
@@ -89,7 +158,7 @@
             stmt2.close();
             con.close();
         } catch (SQLException e) {
-            out.println("<div class='message error'>Error retrieving total sales: " + e.getMessage() + "</div>");
+            out.println("<div class='error-message'>Error retrieving total sales: " + e.getMessage() + "</div>");
         }
     }
     %>
